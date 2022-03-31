@@ -24,9 +24,15 @@ Begin {
     }
     $Source = Resolve-Path $Source.TrimEnd('/\')
     $Target = Resolve-Path $Target.TrimEnd('/\')
+
+    $includesFilename = New-TemporaryFile
+    Set-Content -Path $includesFilename -Value '*'
 }
 Process {
     if ($PSCmdlet.ShouldProcess($Source)) {
-        & $addonBuilderExe $Source $Target "-toolsDirectory=${env:ARMA3TOOLS}" -clear "-prefix=$Prefix"
-    }
+        & $addonBuilderExe $Source $Target "-toolsDirectory=${env:ARMA3TOOLS}" -clear "-prefix=$Prefix" "-include=$includesFilename"
+    }    
+}
+End {
+    Remove-Item $includesFilename -Force
 }
