@@ -12,7 +12,11 @@ param (
 
     [Parameter(Mandatory)]
     [string]
-    $Prefix
+    $Prefix,
+
+    [Parameter(Mandatory)]
+    [string]
+    $Includes = '*'
 )
 Begin {
     if (-Not (Test-Path -Path ${env:ARMA3TOOLS} -PathType Container)) {
@@ -26,7 +30,7 @@ Begin {
     $Target = Resolve-Path $Target.TrimEnd('/\')
 
     $includesFilename = New-TemporaryFile
-    Set-Content -Path $includesFilename -Value '*'
+    Set-Content -Path $includesFilename -Value $Includes
 }
 Process {
     if ($PSCmdlet.ShouldProcess($Source)) {

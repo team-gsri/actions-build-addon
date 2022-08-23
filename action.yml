@@ -13,6 +13,11 @@ inputs:
   prefix:
     description: 'Prefix for the pbo file properties'
     required: true
+  
+  includes:
+    description: 'Pattern for files to include or not in the pbo'
+    required: false
+    default: '*'
 
 runs:
   using: composite
@@ -23,6 +28,7 @@ runs:
         $ActionArgs = @{
           Source = Join-Path -Path ${env:GITHUB_WORKSPACE} -ChildPath '${{ inputs.source }}'
           Target = Join-Path -Path ${env:GITHUB_WORKSPACE} -ChildPath '${{ inputs.target }}'
+          Includes = '${{ inputs.includes }}'
           Prefix = '${{ inputs.prefix }}'
         }
         ${{ github.action_path }}/New-AddonPbo.ps1 @ActionArgs
